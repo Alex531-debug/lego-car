@@ -38,7 +38,7 @@ class Auto
     private $price;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string",columnDefinition="ENUM('available', 'on_order')")
      */
     private $status;
 
@@ -116,11 +116,12 @@ class Auto
         return $this->status;
     }
 
-    public function setStatus(?string $status): self
+    public function setStatus(?string $status)
     {
+        if (isset($status) && !in_array($status, ['available', 'on_order'])) {
+            throw new \InvalidArgumentException("Invalid status");
+        }
         $this->status = $status;
-
-        return $this;
     }
 
     /**
