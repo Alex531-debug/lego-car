@@ -40,8 +40,6 @@ class AutoCrudController extends AbstractCrudController
             TextField::new('vin'),
             CollectionField::new('images'),
             ChoiceField::new('status')->setChoices(['в наличии'=>'available', 'подзаказ'=>'on_order'])
-
         ];
-        //yield IntegerField::new('id', 'ID')->onlyOnIndex();
     }
 }
