@@ -42,7 +42,8 @@ final class AutoFactory extends ModelFactory
             'status' => self::faker()->randomElement(['available', 'on_order']),
             'model' => self::faker()->name(),
             'price' => self::faker()->randomFloat(2, 100000, 2000000),
-            'brand' => self::faker()->randomElement($brands)
+            'brand' => self::faker()->randomElement($brands),
+            'vin' => mb_substr(md5(uniqid()), 0, 17)
         ];
     }
 

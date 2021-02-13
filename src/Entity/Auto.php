@@ -33,6 +33,12 @@ class Auto
     private $model;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=17)
+     */
+    private $vin;
+
+    /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
     private $price;
@@ -97,6 +103,22 @@ class Auto
         $this->model = $model;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVin(): string
+    {
+        return $this->vin;
+    }
+
+    /**
+     * @param string $vin
+     */
+    public function setVin(string $vin): void
+    {
+        $this->vin = $vin;
     }
 
     public function getPrice(): ?string
