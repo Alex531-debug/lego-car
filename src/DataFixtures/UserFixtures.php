@@ -30,11 +30,13 @@ class UserFixtures extends Fixture
             [
                 'email' => 'admin@admin.ru',
                 'role' => ['ROLE_ADMIN'],
+                'name' => 'Алексей',
                 'password' => 'admin'
             ],
             [
                 'email' => 'user@admin.ru',
                 'role' => ['ROLE_USER'],
+                'name' => 'Иван',
                 'password' => 'user'
             ]
         ];
@@ -43,6 +45,7 @@ class UserFixtures extends Fixture
             $newUser = new User();
             $newUser->setEmail($user['email']);
             $newUser->setRoles($user['role']);
+            $newUser->setName($user['name']);
             $newUser->setPassword($this->passwordEncoder->encodePassword($newUser, $user['password']));
             $manager->persist($newUser);
         }
