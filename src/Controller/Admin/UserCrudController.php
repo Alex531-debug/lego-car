@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -33,7 +34,7 @@ class UserCrudController extends AbstractCrudController
         yield FormField::addPanel('Account Information');
         yield IntegerField::new('id', 'ID')->onlyOnIndex();
         yield TextField::new('name');
-        yield TextField::new('email');
+        yield EmailField::new('email');
 
     }
 }
