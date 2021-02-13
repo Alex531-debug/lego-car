@@ -33,7 +33,7 @@ class Auto
     private $model;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
     private $price;
 
@@ -60,7 +60,8 @@ class Auto
     private $images;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="autos")
+     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="autos", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="brand_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $brand;
 
