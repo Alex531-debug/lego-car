@@ -40,9 +40,9 @@ class Brand
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Auto::class, mappedBy="brand")
+     * @ORM\OneToMany(targetEntity=Car::class, mappedBy="brand")
      */
-    private $autos;
+    private $cars;
 
     public function __construct()
     {
@@ -83,29 +83,29 @@ class Brand
     }
 
     /**
-     * @return Collection|Auto[]
+     * @return Collection|Car[]
      */
-    public function getAutos(): Collection
+    public function getCars(): Collection
     {
-        return $this->autos;
+        return $this->cars;
     }
 
-    public function addAuto(Auto $auto): self
+    public function addCar(Car $car): self
     {
-        if (!$this->autos->contains($auto)) {
-            $this->autos[] = $auto;
-            $auto->setBrand($this);
+        if (!$this->cars->contains($car)) {
+            $this->cars->add($car);
+            $car->setBrand($this);
         }
 
         return $this;
     }
 
-    public function removeAuto(Auto $auto): self
+    public function removeCar(Car $car): self
     {
-        if ($this->autos->removeElement($auto)) {
+        if ($this->cars->removeElement($car)) {
             // set the owning side to null (unless already changed)
-            if ($auto->getBrand() === $this) {
-                $auto->setBrand(null);
+            if ($car->getBrand() === $this) {
+                $car->setBrand(null);
             }
         }
 

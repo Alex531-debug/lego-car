@@ -5,11 +5,13 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use App\Entity\Car;
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass=ImageRepository::class)
  * @ORM\HasLifecycleCallbacks()
+ * @Vich\Uploadable()
  */
 class Image
 {
@@ -21,15 +23,15 @@ class Image
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=500)
+     * @var string|null
+     * @ORM\Column(type="string", length=200)
      */
-    private $path;
+    private $image;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Vich\UploadableField(mapping="cars", fileNameProperty="image")
      */
-    private $name;
-
+    private $imageFile;
     /**
      * @var \DateTimeInterface|null
      * @ORM\Column(type="datetime")
@@ -42,34 +44,15 @@ class Image
      */
     private $updatedAt;
 
+    /**
+     * @var Car
+     * @ORM\ManyToOne(targetEntity=Car::class, inversedBy="images")
+     */
+    private $car;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getPath(): ?string
-    {
-        return $this->path;
-    }
-
-    public function setPath(string $path): self
-    {
-        $this->path = $path;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     /**
@@ -86,6 +69,54 @@ class Image
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string|null $image
+     */
+    public function setImage(?string $image): void
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param mixed $imageFile
+     */
+    public function setImageFile($imageFile): void
+    {
+        $this->imageFile = $imageFile;
+    }
+
+    /**
+     * @return \App\Entity\Car
+     */
+    public function getCar(): \App\Entity\Car
+    {
+        return $this->car;
+    }
+
+    /**
+     * @param \App\Entity\Car $car
+     */
+    public function setCar(\App\Entity\Car $car): void
+    {
+        $this->car = $car;
     }
 
     /**

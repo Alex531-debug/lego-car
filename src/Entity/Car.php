@@ -3,17 +3,17 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\AutoRepository;
+use App\Repository\CarRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
- * @ORM\Entity(repositoryClass=AutoRepository::class)
+ * @ORM\Entity(repositoryClass=CarRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
-class Auto
+class Car
 {
     /**
      * @ORM\Id
@@ -61,12 +61,13 @@ class Auto
     private $updatedAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Image::class)
+     * @var ArrayCollection|Image[]
+     * @ORM\OneToMany(targetEntity=Image::class, cascade={"persist", "remove"}, mappedBy="car")
      */
     private $images;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="autos", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="cars", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="brand_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $brand;
@@ -172,8 +173,10 @@ class Auto
 
     public function addImage(Image $image): self
     {
+
         if (!$this->images->contains($image)) {
-            $this->images[] = $image;
+            $this->images->add($image);
+            $image->setCar($this);
         }
 
         return $this;
@@ -181,7 +184,13 @@ class Auto
 
     public function removeImage(Image $image): self
     {
-        $this->images->removeElement($image);
+
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getCar() === $this) {
+                $image->setCar(null);
+            }
+        }
 
         return $this;
     }
