@@ -27,4 +27,6 @@ yarn-error.log
 /symfony.lock
 /composer.lock
 /.idea
+/public/dist/
 ### main ###
+
