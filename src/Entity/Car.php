@@ -15,6 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Car
 {
+    const STATUS_AVAILABLE = 'available';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -44,7 +46,7 @@ class Car
     private $price;
 
     /**
-     * @ORM\Column(type="string",columnDefinition="ENUM('available', 'on_order')")
+     * @ORM\Column(type="enumcarstatus")
      */
     private $status;
 
