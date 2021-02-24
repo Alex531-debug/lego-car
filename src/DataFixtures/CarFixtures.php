@@ -11,7 +11,7 @@ class CarFixtures extends Fixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        CarFactory::new()->createMany(20);
+        CarFactory::new()->createMany(100);
     }
 
     public function getOrder()
