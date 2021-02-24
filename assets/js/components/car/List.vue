@@ -93,14 +93,6 @@
               <span class="sr-only">Show</span>
             </router-link>
           </td>
-          <td>
-            <router-link :to="{name: 'CarUpdate', params: { id: item['@id'] }}">
-              <span
-                class="fa fa-pencil"
-                aria-hidden="true"></span>
-              <span class="sr-only">Edit</span>
-            </router-link>
-          </td>
         </tr>
       </tbody>
     </table>
