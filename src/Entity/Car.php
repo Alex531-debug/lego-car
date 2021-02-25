@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource()
  * @ORM\Entity(repositoryClass=CarRepository::class)
  * @ORM\HasLifecycleCallbacks()
+ * @ORM\Table(indexes={@ORM\Index(name="car_vin", columns={"vin"})})
  */
 class Car
 {
