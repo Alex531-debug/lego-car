@@ -16,7 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Car
 {
     const STATUS_AVAILABLE = 'available';
-
+    const STATUS_ON_ORDER = 'on_order';
+    CONST STATUS_VALUES = [self::STATUS_AVAILABLE, self::STATUS_ON_ORDER];
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -36,7 +37,7 @@ class Car
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=17)
+     * @ORM\Column(type="string", length=17, unique=true)
      */
     private $vin;
 
@@ -143,7 +144,7 @@ class Car
 
     public function setStatus(?string $status)
     {
-        if (isset($status) && !in_array($status, ['available', 'on_order'])) {
+        if (isset($status) && !in_array($status, self::STATUS_VALUES)) {
             throw new \InvalidArgumentException("Invalid status");
         }
         $this->status = $status;

@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource()
  * @ORM\Entity(repositoryClass=BrandRepository::class)
  * @ORM\HasLifecycleCallbacks()
+ * @ORM\Table(indexes={@ORM\Index(name="brand_name", columns={"name"})})
  */
 class Brand
 {
