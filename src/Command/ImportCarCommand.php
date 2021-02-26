@@ -39,7 +39,7 @@ class ImportCarCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $output->writeln(['Начался импорт автомобилей', '==========================', '']);
+        $output->writeln(['Старт импорта автомобилей', '==========================', '']);
 
         if(!is_file($input->getArgument('filename'))) {// проверяем является ли указзный аргумент файлом
             throw new \LogicException(sprintf('неверно указан название файла: %s', $input->getArgument('filename')));
