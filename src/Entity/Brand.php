@@ -47,7 +47,7 @@ class Brand
 
     public function __construct()
     {
-        $this->autos = new ArrayCollection();
+        $this->cars = new ArrayCollection();
     }
 
     public function getId(): ?int
