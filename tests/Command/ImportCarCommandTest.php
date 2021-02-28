@@ -47,7 +47,7 @@ class ImportCarCommandTest extends KernelTestCase
             $car["name"] = sprintf($this->baseCar["name"], $i);
             $car["brand"]["name"] = sprintf($this->baseCar["brand"]["name"], intdiv($i, 10));
             $car["vin"] = (int)$this->baseCar["vin"] + $i;
-            $this->cars[] = $car;
+            $this->cars[$car["vin"]] = $car;
         }
     }
 
@@ -60,7 +60,9 @@ class ImportCarCommandTest extends KernelTestCase
         }
         unset($this->cars);
         $this->em->flush();
+        $this->em->clear();
         $this->em->close();
+        unset($this->em);
     }
 
     public function testExecute()
@@ -69,7 +71,7 @@ class ImportCarCommandTest extends KernelTestCase
         $fileName = sprintf(sys_get_temp_dir().'/cars-import-testing-%s.json', uniqid());
 
         // записываем json в файл
-        file_put_contents($fileName, json_encode($this->cars));
+        file_put_contents($fileName, json_encode(array_values($this->cars)));
 
         // выполняем консольную команду команду
         $kernel = static::createKernel();
@@ -84,25 +86,36 @@ class ImportCarCommandTest extends KernelTestCase
         $output = $commandTester->getDisplay();
         //проверяем что вышла запись об успешном выполнении теста
         $this->assertStringContainsString('Импрот завершился успешно, время работы програмы', $output);
-        // получем entity первого автомобиля из базы
-        $car = $this->em->getRepository(Car::class)->findOneByVin($this->cars[0]['vin']);
-
-        //проверяем что запись есть в базе и entity не пуст
-        $this->assertNotEmpty($car);
-
-        //что он соответствует классу Car
-        $this->assertInstanceOf(Car::class, $car);
-
-        // что vin из тестовых данных совподает с vin загруженным в базу
-        $this->assertEquals((int)$this->cars[0]['vin'], $car->getVin());
 
         // получемк все тестовые данные из базы
         $cars = $this->em->getRepository(Car::class)->findByVin(array_column($this->cars, 'vin'));
         // проверяем что все данные успешно загружены в базу
         $this->assertCount(count($this->cars), $cars);
         // очищаем переменные, удаляем файл
-        unset($car, $cars);
         unlink($fileName);
+        return $cars;
+    }
+
+    public function carsProvider() {
+        return $this->cars;
+    }
+    /**
+     * @depends testExecute
+     */
+    public function testExecuteIsValidSaveDB(array $cars)
+    {
+        foreach ($cars as $car) {
+            $carProvider = $this->cars[$car->getVin()];
+            $this->assertNotEmpty($car);
+            //что он соответствует классу Car
+            $this->assertInstanceOf(Car::class, $car);
+            $this->assertEquals((int)$carProvider['vin'], (int)$car->getVin());
+            $this->assertEquals($carProvider['name'], $car->getName());
+            $this->assertEquals($carProvider['model'], $car->getModel());
+            $this->assertEquals((float)$carProvider['price'], (float)$car->getPrice());
+            $this->assertEquals($carProvider['status'], $car->getStatus());
+            unset($carProvider, $car);
+        }
     }
 
     /**
@@ -112,7 +125,7 @@ class ImportCarCommandTest extends KernelTestCase
     {
         $fileName = sprintf(sys_get_temp_dir().'/cars-import-testing-%s.json', uniqid());
 
-        file_put_contents($fileName, mb_substr(trim(json_encode($this->cars)), 3));
+        file_put_contents($fileName, mb_substr(trim(json_encode(array_values($this->cars))), 3));
 
         $this->expectException(ParsingException::class);
 
