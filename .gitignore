@@ -30,6 +30,4 @@ yarn-error.log
 /public/dist/
 ### main ###
 
-/cars-import.json
-/big-cars-import.json
 /symfony.exe
