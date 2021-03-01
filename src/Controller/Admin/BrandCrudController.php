@@ -38,6 +38,7 @@ class BrandCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+            'id',
             'name'
         ];
     }
