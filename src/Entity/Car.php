@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CarRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Filter\CountFilter;
 /**
  * @ApiResource()
+ * @ApiFilter(CountFilter::class, properties={"images"})
  * @ORM\Entity(repositoryClass=CarRepository::class)
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(indexes={@ORM\Index(name="car_vin", columns={"vin"})})
