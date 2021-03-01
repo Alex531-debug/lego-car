@@ -43,7 +43,7 @@ class CountFilter extends AbstractFilter implements RangeFilterInterface
 
         foreach ($values as $operator => $value) {
 
-            $this->addWhere(
+            $this->addHaving(
                 $queryBuilder,
                 $queryNameGenerator,
                 $alias,
@@ -62,7 +62,7 @@ class CountFilter extends AbstractFilter implements RangeFilterInterface
      * @param string $operator
      * @param string $value
      */
-    protected function addWhere(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, $alias, $field, $operator, $value)
+    protected function addHaving(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, $alias, $field, $operator, $value)
     {
         $valueParameter = $queryNameGenerator->generateParameterName($field);
 
@@ -79,14 +79,14 @@ class CountFilter extends AbstractFilter implements RangeFilterInterface
 
                 if ($rangeValue[0] === $rangeValue[1]) {
                     $queryBuilder
-                        ->having(sprintf('size_%s_%s = :%s', $alias, $field, $valueParameter))
+                        ->andHaving(sprintf('size_%s_%s = :%s', $alias, $field, $valueParameter))
                         ->setParameter($valueParameter, $rangeValue[0]);
 
                     return;
                 }
 
                 $queryBuilder
-                    ->having(sprintf('size_%s_%s BETWEEN :%3$s_1 AND :%3$s_2', $alias, $field, $valueParameter))
+                    ->andHaving(sprintf('size_%s_%s BETWEEN :%3$s_1 AND :%3$s_2', $alias, $field, $valueParameter))
                     ->setParameter(sprintf('%s_1', $valueParameter), $rangeValue[0])
                     ->setParameter(sprintf('%s_2', $valueParameter), $rangeValue[1]);
 
@@ -98,7 +98,7 @@ class CountFilter extends AbstractFilter implements RangeFilterInterface
                 }
 
                 $queryBuilder
-                    ->having(sprintf('size_%s_%s > :%s', $alias, $field, $valueParameter))
+                    ->andHaving(sprintf('size_%s_%s > :%s', $alias, $field, $valueParameter))
                     ->setParameter($valueParameter, $value);
 
                 break;
@@ -109,7 +109,7 @@ class CountFilter extends AbstractFilter implements RangeFilterInterface
                 }
 
                 $queryBuilder
-                    ->having(sprintf('size_%s_%s >= :%s', $alias, $field, $valueParameter))
+                    ->andHaving(sprintf('size_%s_%s >= :%s', $alias, $field, $valueParameter))
                     ->setParameter($valueParameter, $value);
 
                 break;
@@ -120,7 +120,7 @@ class CountFilter extends AbstractFilter implements RangeFilterInterface
                 }
 
                 $queryBuilder
-                    ->having(sprintf('size_%s_%s < :%s', $alias, $field, $valueParameter))
+                    ->andHaving(sprintf('size_%s_%s < :%s', $alias, $field, $valueParameter))
                     ->setParameter($valueParameter, $value);
 
                 break;
@@ -131,7 +131,7 @@ class CountFilter extends AbstractFilter implements RangeFilterInterface
                 }
 
                 $queryBuilder
-                    ->having(sprintf('size_%s_%s <= :%s', $alias, $field, $valueParameter))
+                    ->andHaving(sprintf('size_%s_%s <= :%s', $alias, $field, $valueParameter))
                     ->setParameter($valueParameter, $value);
 
                 break;
