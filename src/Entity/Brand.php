@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\BrandRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Filter\UniqueFilter;
 /**
  * @ApiResource()
+ * @ApiFilter(UniqueFilter::class, properties={"name"})
  * @ORM\Entity(repositoryClass=BrandRepository::class)
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(indexes={@ORM\Index(name="brand_name", columns={"name"})})
