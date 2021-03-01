@@ -42,12 +42,12 @@ class UniqueFilter extends AbstractContextAwareFilter
             [$alias, $field] = $this->addJoinsForNestedProperty($property, $alias, $queryBuilder, $queryNameGenerator, $resourceClass);
         }
 
-        $valueParameter = $queryNameGenerator->generateParameterName($field);
+        if(!!$value) {
 
-        if($value === 1) {
             $queryBuilder
+                ->select(sprintf('%s.%s', $alias, $field))
                 ->addGroupBy(sprintf('%s.%s', $alias, $field))
-                ->setParameter($valueParameter, $value);
+                ->orderBy(sprintf('%s.%s', $alias, $field));
         }
     }
 }
