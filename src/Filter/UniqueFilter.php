@@ -49,7 +49,5 @@ class UniqueFilter extends AbstractContextAwareFilter
                 ->addGroupBy(sprintf('%s.%s', $alias, $field))
                 ->setParameter($valueParameter, $value);
         }
-
-
     }
 }
