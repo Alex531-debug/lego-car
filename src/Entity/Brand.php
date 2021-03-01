@@ -43,7 +43,7 @@ class Brand
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Car::class, mappedBy="brand")
+     * @ORM\OneToMany(targetEntity=Car::class, mappedBy="brand", cascade={"remove"})
      */
     private $cars;
 

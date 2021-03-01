@@ -75,7 +75,7 @@ class Car
     private $images;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="cars", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="cars", cascade={"persist"})
      * @ORM\JoinColumn(name="brand_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $brand;
