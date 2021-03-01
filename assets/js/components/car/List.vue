@@ -24,8 +24,6 @@
           <th>vin</th>
           <th>цена</th>
           <th>статус</th>
-          <th>изображения</th>
-          <th>brand</th>
           <th colspan="2"></th>
         </tr>
       </thead>
@@ -49,42 +47,6 @@
               {{ prepareStatus(item['status']) }}
           </td>
           <td>
-              <template>
-                <div
-                  v-if="Array.isArray(item['images'])">
-                  <router-link
-                    v-for="link in item['images']"
-                    :key="link['@id']"
-                    :to="{ name: 'ImageShow', params: { id: link['@id'] } }">
-                    {{ link['@id'] }}
-                  </router-link>
-                </div>
-                <router-link
-                  v-else
-                  :to="{ name: 'ImageShow', params: { id: item['images'] } }">
-                  {{ item['images'] }}
-                </router-link>
-              </template>
-          </td>
-          <td>
-              <template>
-                <div
-                  v-if="Array.isArray(item['brands'])">
-                  <router-link
-                    v-for="link in item['brands']"
-                    :key="link['@id']"
-                    :to="{ name: 'BrandShow', params: { id: link['@id'] } }">
-                    {{ link['@id'] }}
-                  </router-link>
-                </div>
-                <router-link
-                  v-else
-                  :to="{ name: 'BrandShow', params: { id: item['brands'] } }">
-                  {{ item['brands'] }}
-                </router-link>
-              </template>
-          </td>
-          <td>
             <router-link
               :to="{name: 'CarShow', params: { id: item['@id'] }}">
               <span
@@ -99,28 +61,28 @@
 
     <nav aria-label="Page navigation" v-if="view">
       <router-link
-        :to="view['hydra:first'] ? view['hydra:first'] : 'CarContactList'"
+        :to="view['hydra:first'] ? view['hydra:first'].replace('/api/', '/') : '/cars/'"
         :class="{ disabled: !view['hydra:previous'] }"
         class="btn btn-primary">
         <span aria-hidden="true">&lArr;</span> First
       </router-link>
       &nbsp;
       <router-link
-        :to="!view['hydra:previous'] || view['hydra:previous'] === view['hydra:first'] ? 'CarList' : view['hydra:previous']"
+        :to="!view['hydra:previous'] || view['hydra:previous'] === view['hydra:first'] ? '/cars/' : view['hydra:previous'].replace('/api/', '/')"
         :class="{ disabled: !view['hydra:previous'] }"
         class="btn btn-primary">
         <span aria-hidden="true">&larr;</span> Previous
       </router-link>
 
       <router-link
-        :to="view['hydra:next'] ? view['hydra:next'] : '#'"
+        :to="view['hydra:next'] ? view['hydra:next'].replace('/api/', '/') : '#'"
         :class="{ disabled: !view['hydra:next'] }"
         class="btn btn-primary">
         Next <span aria-hidden="true">&rarr;</span>
       </router-link>
 
       <router-link
-        :to="view['hydra:last'] ? view['hydra:last'] : '#'"
+        :to="view['hydra:last'] ? view['hydra:last'].replace('/api/', '/') : '#'"
         :class="{ disabled: !view['hydra:next'] }"
         class="btn btn-primary">
         Last <span aria-hidden="true">&rArr;</span>
@@ -132,7 +94,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { mapFields } from 'vuex-map-fields';
-
+import { ENTRYPOINT } from './../../config/entrypoint';
 export default {
   name: "CarList",
   computed: {
@@ -145,15 +107,21 @@ export default {
           isLoading: 'isLoading',
           view: 'view',
       }),
+      endpoint() {
+          return ENTRYPOINT;
+      }
   },
-
   mounted() {
-    this.getPage();
+    this.getPage(this.$route.fullPath === '/' ? '/cars/' : this.$route.fullPath);
   },
-
+  watch: {
+    $route: function (val) {
+      this.getPage(val.fullPath);
+    }
+  },
   methods: {
     ...mapActions({
-      getPage: 'car/list/default',
+        getPage: 'car/list/default',
     }),
     prepareStatus(status){
       switch (status) {

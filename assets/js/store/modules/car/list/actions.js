@@ -4,8 +4,11 @@ import { ENTRYPOINT } from './../../../../config/entrypoint';
 
 
 const getItems = ({ commit }, page = "cars") => {
+
+    console.log(page);
+
   commit(types.TOGGLE_LOADING);
-  fetch(ENTRYPOINT+'/'+page)
+  fetch(ENTRYPOINT+page)
     .then((response) => response.json())
     .then((data) => {
       commit(types.TOGGLE_LOADING);
@@ -23,8 +26,7 @@ export const getSelectItems = (
   { page = "cars", params = { properties: ["@id", "name"] } } = {}
 ) => {
   commit(types.TOGGLE_LOADING);
-
-  fetch(ENTRYPOINT+'/'+page, { params })
+  fetch(ENTRYPOINT+page, { params })
     .then((response) => response.json())
     .then((data) => {
       commit(types.TOGGLE_LOADING);

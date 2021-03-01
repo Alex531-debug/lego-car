@@ -1,10 +1,11 @@
 import fetch from "../../../../utils/fetch";
 import * as types from "./mutation_types";
+import { ENTRYPOINT } from './../../../../config/entrypoint';
 
 const getItems = ({ commit }, page = "images") => {
   commit(types.TOGGLE_LOADING);
 
-  fetch(page)
+  fetch(ENTRYPOINT+page)
     .then((response) => response.json())
     .then((data) => {
       commit(types.TOGGLE_LOADING);
@@ -23,7 +24,7 @@ export const getSelectItems = (
 ) => {
   commit(types.TOGGLE_LOADING);
 
-  fetch(page, { params })
+  fetch(ENTRYPOINT+page, { params })
     .then((response) => response.json())
     .then((data) => {
       commit(types.TOGGLE_LOADING);

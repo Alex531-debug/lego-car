@@ -34,11 +34,11 @@
         </thead>
         <tbody>
           <tr>
-            <th scope="row">name</th>
+            <th scope="row">название</th>
             <td>{{ item['name'] }}</td>
           </tr>
           <tr>
-            <th scope="row">model</th>
+            <th scope="row">моедль</th>
             <td>{{ item['model'] }}</td>
           </tr>
           <tr>
@@ -46,28 +46,12 @@
             <td>{{ item['vin'] }}</td>
           </tr>
           <tr>
-            <th scope="row">price</th>
+            <th scope="row">цена</th>
             <td>{{ item['price'] }}</td>
           </tr>
           <tr>
-            <th scope="row">status</th>
-            <td>{{ item['status'] }}</td>
-          </tr>
-          <tr>
-            <th scope="row">createdAt</th>
-            <td>{{ item['createdAt'] }}</td>
-          </tr>
-          <tr>
-            <th scope="row">updatedAt</th>
-            <td>{{ item['updatedAt'] }}</td>
-          </tr>
-          <tr>
-            <th scope="row">images</th>
-            <td>{{ item['images'] }}</td>
-          </tr>
-          <tr>
-            <th scope="row">brand</th>
-            <td>{{ item['brand'] }}</td>
+            <th scope="row">статус</th>
+            <td>{{ prepareStatus(item['status']) }}</td>
           </tr>
         </tbody>
       </table>
@@ -78,15 +62,6 @@
       class="btn btn-primary">
       Back to list
     </router-link>
-    <router-link
-      v-if="item"
-      :to="{ name: 'CarUpdate', params: { id: item['@id'] } }"
-      class="btn btn-warning">
-      Edit
-    </router-link>
-    <button
-      class="btn btn-danger"
-      @click="deleteItem(item)">Delete</button>
   </div>
 </template>
 
@@ -126,6 +101,17 @@ export default {
         this.del(item).then(() => this.$router.push({ name: 'CarList' }));
       }
     },
+    prepareStatus(status){
+      switch (status) {
+        case 'available':
+          return 'В наличии'
+          break;
+        case 'on_order':
+          return 'Подзаказ';
+          break;
+      }
+      return null;
+    }
   },
 };
 </script>

@@ -1,10 +1,12 @@
 import fetch from "../../../../utils/fetch";
 import * as types from "./mutation_types";
 
+import { ENTRYPOINT } from './../../../../config/entrypoint';
+
 export const retrieve = ({ commit }, id) => {
   commit(types.IMAGE_SHOW_TOGGLE_LOADING);
 
-  return fetch(id)
+  return fetch(ENTRYPOINT+id)
     .then((response) => response.json())
     .then((data) => {
       commit(types.IMAGE_SHOW_TOGGLE_LOADING);
